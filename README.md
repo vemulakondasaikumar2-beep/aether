@@ -177,7 +177,7 @@ No build tools, no npm, no dependencies. Just open it in a browser!
 git clone https://github.com/vemulakondasaikumar2-beep/aether.git
 
 # Open in browser
-start aether/index.html
+https://vemulakondasaikumar2-beep.github.io/aether/
 ```
 
 ### Option 2 — Local Server (Recommended)
