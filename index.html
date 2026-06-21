@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether - Smart Student Concierge Agent</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <i data-lucide="sparkles"></i>
+        </div>
+        <span class="logo-text">Aether</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" data-tab="concierge">
+          <i data-lucide="bot"></i>
+          <span>AI Concierge</span>
+        </button>
+        <button class="nav-btn" data-tab="focus">
+          <i data-lucide="hourglass"></i>
+          <span>Focus Hub</span>
+        </button>
+        <button class="nav-btn" data-tab="tasks">
+          <i data-lucide="check-square"></i>
+          <span>Task Board</span>
+        </button>
+        <button class="nav-btn" data-tab="notes">
+          <i data-lucide="notebook"></i>
+          <span>Notes & Deadlines</span>
+        </button>
+        <button class="nav-btn" data-tab="utilities">
+          <i data-lucide="bar-chart-2"></i>
+          <span>Analytics & GPA</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">SC</div>
+          <div class="user-info">
+            <span class="user-name">Scholar Mode</span>
+            <span class="user-status">Active Study Session</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Dynamic Header -->
+      <header class="top-header">
+        <div class="header-welcome">
+          <h1 id="dynamic-greeting">Good day, Scholar!</h1>
+          <p id="header-date">Sunday, June 21, 2026</p>
+        </div>
+        
+        <!-- Today's Quote Widget -->
+        <div class="header-quote-widget">
+          <i data-lucide="quote" class="quote-icon"></i>
+          <span id="random-quote">Loading wisdom...</span>
+        </div>
+        
+        <button class="mobile-toggle" id="mobile-menu-toggle">
+          <i data-lucide="menu"></i>
+        </button>
+      </header>
+
+      <!-- Scrollable Content Grid -->
+      <div class="content-container">
+        
+        <!-- DASHBOARD PANEL -->
+        <section id="dashboard" class="tab-panel active">
+          <!-- Banner Section -->
+          <div class="welcome-banner">
+            <div class="banner-content">
+              <h2>Ready to crush your goals today?</h2>
+              <p>Your AI companion is primed to help you generate study schedules, quiz your understanding, or keep you focused.</p>
+              <div class="banner-actions">
+                <button class="btn btn-primary" onclick="switchTab('concierge')">
+                  <i data-lucide="message-square"></i> Ask Concierge
+                </button>
+                <button class="btn btn-secondary" onclick="switchTab('focus')">
+                  <i data-lucide="play"></i> Start Study Timer
+                </button>
+              </div>
+            </div>
+            <div class="banner-illustration">
+              <div class="sphere-gradient animate-pulse"></div>
+            </div>
+          </div>
+
+          <!-- Quick Stats Row -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-icon-wrapper purple">
+                <i data-lucide="clock"></i>
+              </div>
+              <div class="stat-details">
+                <h3 id="stat-focus-time">0m</h3>
+                <p>Focus Minutes Today</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper green">
+                <i data-lucide="check-circle-2"></i>
+              </div>
+              <div class="stat-details">
+                <h3 id="stat-tasks-done">0/0</h3>
+                <p>Tasks Completed</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper blue">
+                <i data-lucide="calendar"></i>
+              </div>
+              <div class="stat-details">
+                <h3 id="stat-deadlines-count">0</h3>
+                <p>Active Deadlines</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper orange">
+                <i data-lucide="flame"></i>
+              </div>
+              <div class="stat-details">
+                <h3 id="stat-habit-streak">0d</h3>
+                <p>Habit Streak</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dashboard Double Grid -->
+          <div class="dashboard-grid">
+            <!-- Focus Hub Quick Widget -->
+            <div class="grid-card widget-focus">
+              <div class="card-header">
+                <h3>Focus Workspace</h3>
+                <span class="badge" id="dash-timer-status">Idle</span>
+              </div>
+              <div class="dash-timer-display">
+                <div class="circle-timer-mini">
+                  <span id="dash-timer-text">25:00</span>
+                </div>
+                <div class="dash-timer-controls">
+                  <button class="btn-icon play-btn" id="dash-timer-toggle"><i data-lucide="play"></i></button>
+                  <button class="btn-icon" onclick="switchTab('focus')"><i data-lucide="maximize-2"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Task List Quick Widget -->
+            <div class="grid-card widget-tasks">
+              <div class="card-header">
+                <h3>Urgent Tasks</h3>
+                <button class="btn-text" onclick="switchTab('tasks')">View All</button>
+              </div>
+              <ul class="quick-task-list" id="quick-task-list">
+                <li class="empty-state">No urgent tasks. Add some on the Task Board!</li>
+              </ul>
+            </div>
+
+            <!-- AI Quick Suggestion Widget -->
+            <div class="grid-card widget-tips">
+              <div class="card-header">
+                <h3>Daily Study Tip</h3>
+                <button class="btn-icon" id="new-tip-btn" title="New Tip"><i data-lucide="refresh-cw"></i></button>
+              </div>
+              <div class="study-tip-box">
+                <h4 id="tip-title">The Feynman Technique</h4>
+                <p id="tip-desc">Explain concepts in simple terms to spot gaps in your understanding.</p>
+              </div>
+            </div>
+
+            <!-- Deadlines Countdown Widget -->
+            <div class="grid-card widget-deadlines">
+              <div class="card-header">
+                <h3>Upcoming Deadlines</h3>
+                <button class="btn-text" onclick="switchTab('notes')">Add Deadline</button>
+              </div>
+              <div class="quick-deadlines" id="quick-deadlines-list">
+                <div class="empty-state">No upcoming deadlines.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- AI CONCIERGE PANEL -->
+        <section id="concierge" class="tab-panel">
+          <div class="panel-layout chat-layout">
+            <!-- Left Info Panel -->
+            <div class="chat-info-sidebar">
+              <h3>Concierge Agent</h3>
+              <p>Aether parses questions, generates schedules, and provides study tips.</p>
+              <div class="suggested-queries">
+                <h4>Suggested Commands:</h4>
+                <button class="query-chip" onclick="sendSuggestedQuery('Explain gravity')">"Explain gravity"</button>
+                <button class="query-chip" onclick="sendSuggestedQuery('Suggest a study schedule')">"Suggest a study schedule"</button>
+                <button class="query-chip" onclick="sendSuggestedQuery('Explain calculus')">"Explain calculus"</button>
+                <button class="query-chip" onclick="sendSuggestedQuery('How does photosynthesis work?')">"Explain photosynthesis"</button>
+                <button class="query-chip" onclick="sendSuggestedQuery('Give me a study tip')">"Give me a study tip"</button>
+              </div>
+            </div>
+
+            <!-- Chat Interface -->
+            <div class="chat-main">
+              <div class="chat-header">
+                <div class="agent-avatar"><i data-lucide="bot"></i></div>
+                <div class="agent-details">
+                  <h4>Aether Assistant</h4>
+                  <span class="status-indicator online">Online & ready</span>
+                </div>
+              </div>
+              
+              <div class="chat-messages" id="chat-messages">
+                <!-- Initial welcome message -->
+                <div class="message system">
+                  <div class="msg-bubble">
+                    Welcome back! I am your Aether Concierge. Ask me academic questions, request custom schedules, or ask for study tips!
+                  </div>
+                </div>
+              </div>
+
+              <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Ask Aether something... (e.g., 'Explain gravity')" autocomplete="off">
+                <button class="btn btn-primary" id="chat-send">
+                  <i data-lucide="send"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOCUS HUB PANEL -->
+        <section id="focus" class="tab-panel">
+          <div class="focus-layout">
+            <!-- Timer Display Card -->
+            <div class="focus-timer-card">
+              <div class="timer-modes">
+                <button class="mode-btn active" data-mode="pomodoro">Pomodoro (25m)</button>
+                <button class="mode-btn" data-mode="shortBreak">Short Break (5m)</button>
+                <button class="mode-btn" data-mode="longBreak">Long Break (15m)</button>
+              </div>
+
+              <div class="timer-display-container">
+                <svg class="progress-ring" width="280" height="280">
+                  <circle class="progress-ring__circle-bg" stroke="#1f2937" stroke-width="12" fill="transparent" r="120" cx="140" cy="140" />
+                  <circle class="progress-ring__circle" stroke="url(#timer-gradient)" stroke-width="12" stroke-linecap="round" fill="transparent" r="120" cx="140" cy="140" />
+                  <defs>
+                    <linearGradient id="timer-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#2dd4bf" />
+                      <stop offset="100%" stop-color="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="timer-time" id="timer-time-text">25:00</div>
+              </div>
+
+              <div class="timer-controls">
+                <button class="btn btn-secondary" id="timer-reset"><i data-lucide="rotate-ccw"></i> Reset</button>
+                <button class="btn btn-primary btn-large" id="timer-play-pause"><i data-lucide="play"></i> Start Focus</button>
+                <button class="btn btn-secondary" id="timer-skip"><i data-lucide="skip-forward"></i> Skip</button>
+              </div>
+            </div>
+
+            <!-- Soundscape and Timer Settings -->
+            <div class="focus-settings-card">
+              <div class="soundscape-section">
+                <h3>Focus Soundscape</h3>
+                <p class="subtitle">Procedural ambient sounds created directly in your browser.</p>
+                
+                <div class="sound-grid">
+                  <button class="sound-card" data-sound="rain">
+                    <i data-lucide="cloud-rain"></i>
+                    <span>Rain Shower</span>
+                  </button>
+                  <button class="sound-card" data-sound="white">
+                    <i data-lucide="radio"></i>
+                    <span>White Noise</span>
+                  </button>
+                  <button class="sound-card" data-sound="cafe">
+                    <i data-lucide="coffee"></i>
+                    <span>Cafe Ambiance</span>
+                  </button>
+                  <button class="sound-card" data-sound="lofi">
+                    <i data-lucide="music-4"></i>
+                    <span>Focus Humming</span>
+                  </button>
+                </div>
+                
+                <div class="volume-slider">
+                  <i data-lucide="volume-2"></i>
+                  <input type="range" id="soundscape-volume" min="0" max="100" value="50">
+                  <span id="volume-val">50%</span>
+                </div>
+              </div>
+
+              <div class="timer-customizer">
+                <h3>Customize Intervals</h3>
+                <div class="customizer-inputs">
+                  <div class="input-group">
+                    <label>Pomodoro</label>
+                    <input type="number" id="custom-pomo" min="1" max="120" value="25">
+                  </div>
+                  <div class="input-group">
+                    <label>Short Break</label>
+                    <input type="number" id="custom-short" min="1" max="60" value="5">
+                  </div>
+                  <div class="input-group">
+                    <label>Long Break</label>
+                    <input type="number" id="custom-long" min="1" max="60" value="15">
+                  </div>
+                </div>
+                <button class="btn btn-secondary btn-full" id="apply-custom-timer">Apply Custom Intervals</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TASK BOARD PANEL -->
+        <section id="tasks" class="tab-panel">
+          <div class="task-panel-header">
+            <div class="task-filters">
+              <button class="filter-btn active" data-filter="all">All Tasks</button>
+              <button class="filter-btn" data-filter="pending">Pending</button>
+              <button class="filter-btn" data-filter="completed">Completed</button>
+              <button class="filter-btn" data-filter="high">High Priority</button>
+            </div>
+            <button class="btn btn-primary" id="open-task-modal-btn">
+              <i data-lucide="plus"></i> Add New Task
+            </button>
+          </div>
+
+          <div class="task-board-grid">
+            <!-- Pending Column -->
+            <div class="task-column">
+              <div class="column-header">
+                <h3>To Do</h3>
+                <span class="count-badge" id="todo-count">0</span>
+              </div>
+              <div class="task-list" id="todo-task-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Completed Column -->
+            <div class="task-column">
+              <div class="column-header">
+                <h3>Completed</h3>
+                <span class="count-badge" id="completed-count">0</span>
+              </div>
+              <div class="task-list" id="completed-task-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NOTES & DEADLINES PANEL -->
+        <section id="notes" class="tab-panel">
+          <div class="notes-panel-layout">
+            <!-- Left: Deadlines Column -->
+            <div class="deadlines-card">
+              <div class="card-header">
+                <h3>Academic Deadlines</h3>
+                <button class="btn btn-secondary btn-sm" id="open-deadline-modal-btn">
+                  <i data-lucide="plus"></i> Add
+                </button>
+              </div>
+              <div class="deadlines-list" id="deadlines-list-container">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Right: Notes Board -->
+            <div class="notes-board-card">
+              <div class="notes-board-header">
+                <h3>Personal Notes</h3>
+                <button class="btn btn-primary btn-sm" id="open-note-modal-btn">
+                  <i data-lucide="plus"></i> Add Note
+                </button>
+              </div>
+              <div class="notes-grid" id="notes-grid-container">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ANALYTICS, GPA, & HABIT PANEL -->
+        <section id="utilities" class="tab-panel">
+          <div class="utilities-layout">
+            <!-- Grade / GPA Calculator -->
+            <div class="utility-card gpa-calculator">
+              <h3>GPA Calculator</h3>
+              <p class="subtitle">Input your course grades and credit units to calculate your current GPA.</p>
+              
+              <div class="gpa-inputs">
+                <table class="gpa-table">
+                  <thead>
+                    <tr>
+                      <th>Course Title</th>
+                      <th>Grade (A-F)</th>
+                      <th>Credits</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="gpa-rows-container">
+                    <!-- Rows will be injected -->
+                  </tbody>
+                </table>
+                <button class="btn btn-secondary btn-sm mt-10" id="gpa-add-row-btn">
+                  <i data-lucide="plus"></i> Add Course
+                </button>
+              </div>
+              <div class="gpa-result-banner">
+                <div class="gpa-score" id="gpa-score-display">0.00</div>
+                <div class="gpa-text">Estimated GPA (4.0 Scale)</div>
+              </div>
+            </div>
+
+            <!-- Habit Tracker -->
+            <div class="utility-card habit-tracker">
+              <h3>Daily Habits</h3>
+              <p class="subtitle">Complete habits daily to maintain your study streak.</p>
+              <div class="habit-items-container" id="habit-items-container">
+                <!-- Injected via JS -->
+              </div>
+              <div class="habit-input-bar">
+                <input type="text" id="new-habit-input" placeholder="New Habit (e.g. Read 15m)" autocomplete="off">
+                <button class="btn btn-secondary" id="add-habit-btn">Add</button>
+              </div>
+            </div>
+
+            <!-- Study Analytics Dashboard -->
+            <div class="utility-card study-analytics">
+              <h3>Weekly Focus Analytics</h3>
+              <p class="subtitle">Analysis of total focus sessions completed this week.</p>
+              
+              <div class="chart-container">
+                <svg id="analytics-chart" viewBox="0 0 400 200" width="100%" height="200">
+                  <!-- Custom SVG Chart generated by JS -->
+                </svg>
+              </div>
+              
+              <div class="analytics-summaries">
+                <div class="summary-item">
+                  <span class="label">Completion Rate</span>
+                  <span class="value" id="analytics-completion-rate">0%</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Deep Work Ratio</span>
+                  <span class="value" id="analytics-deepwork-ratio">0h / 0h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- TASK MODAL -->
+  <div class="modal" id="task-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create New Task</h3>
+        <button class="close-modal-btn" data-modal="task-modal">&times;</button>
+      </div>
+      <form id="task-form">
+        <div class="form-group">
+          <label for="task-title">Task Title</label>
+          <input type="text" id="task-title" required placeholder="e.g. Math Assignment 4">
+        </div>
+        <div class="form-group">
+          <label for="task-category">Category</label>
+          <select id="task-category">
+            <option value="Homework">Homework</option>
+            <option value="Project">Project</option>
+            <option value="Exam">Exam</option>
+            <option value="Personal">Personal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="task-priority">Priority</label>
+          <select id="task-priority">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="task-deadline">Deadline Date</label>
+          <input type="date" id="task-deadline">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Save Task</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- NOTE MODAL -->
+  <div class="modal" id="note-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create Note</h3>
+        <button class="close-modal-btn" data-modal="note-modal">&times;</button>
+      </div>
+      <form id="note-form">
+        <div class="form-group">
+          <label for="note-title">Note Title</label>
+          <input type="text" id="note-title" required placeholder="e.g. Newtonian Equations">
+        </div>
+        <div class="form-group">
+          <label for="note-content">Note Content (Markdown supported)</label>
+          <textarea id="note-content" rows="6" required placeholder="Write details here..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="note-tag">Tag</label>
+          <input type="text" id="note-tag" placeholder="e.g. Physics, Exams">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Save Note</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DEADLINE MODAL -->
+  <div class="modal" id="deadline-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Important Deadline</h3>
+        <button class="close-modal-btn" data-modal="deadline-modal">&times;</button>
+      </div>
+      <form id="deadline-form">
+        <div class="form-group">
+          <label for="deadline-title">Event Name</label>
+          <input type="text" id="deadline-title" required placeholder="e.g. Final Chemistry Exam">
+        </div>
+        <div class="form-group">
+          <label for="deadline-datetime">Date & Time</label>
+          <input type="datetime-local" id="deadline-datetime" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Save Deadline</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Load script files -->
+  <script src="mockData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
